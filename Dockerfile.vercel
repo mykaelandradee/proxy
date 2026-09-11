@@ -6,4 +6,5 @@ ENV PATH="/mediaflow_proxy/.venv/bin:$PATH"
 COPY diagnostic/server.py /diagnostic/server.py
 
 EXPOSE 8888
-CMD ["python", "/diagnostic/server.py"]
+
+ENTRYPOINT ["python", "/diagnostic/server.py"]
