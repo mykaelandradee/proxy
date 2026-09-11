@@ -1,0 +1,4 @@
+FROM mhdzumair/mediaflow-proxy:latest
+COPY diagnostic/server.py /diagnostic/server.py
+EXPOSE 8888
+CMD ["python", "/diagnostic/server.py"]
