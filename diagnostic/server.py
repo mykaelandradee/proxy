@@ -10,6 +10,9 @@ sys.path.insert(0, "/mediaflow_proxy")
 
 from mediaflow_proxy.main import app
 
+# Move the catch-all static mount behind this diagnostic route.
+static_route = app.router.routes.pop()
+
 DEFAULT_UA = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36"
 IPTV_UA = "IPTVSmartersPro/3.0.0"
 
@@ -62,6 +65,9 @@ async def diagnostic(url: str = Query(..., description="Provider stream URL")):
             "no_range_chrome_manual": await probe(session, url, range_header=None, ua=DEFAULT_UA, allow_redirects=False),
         }
     return JSONResponse({"target": safe_url(url), "tests": tests})
+
+
+app.router.routes.append(static_route)
 
 
 if __name__ == "__main__":
