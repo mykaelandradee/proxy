@@ -1,11 +1,11 @@
 import os
 from urllib.parse import urlsplit, urlunsplit
 
-from fastapi import FastAPI, Query
+from fastapi import Query
 from fastapi.responses import JSONResponse
 import aiohttp
 
-app = FastAPI()
+from mediaflow_proxy.main import app
 
 DEFAULT_UA = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36"
 IPTV_UA = "IPTVSmartersPro/3.0.0"
@@ -35,7 +35,16 @@ async def probe(session, url, *, range_header=None, ua=DEFAULT_UA, allow_redirec
                 "error": None,
             }
     except Exception as exc:
-        return {"status": None, "content_type": None, "content_length": None, "server": None, "location": None, "final_url": None, "body_prefix": None, "error": type(exc).__name__ + ": " + str(exc)[:160]}
+        return {
+            "status": None,
+            "content_type": None,
+            "content_length": None,
+            "server": None,
+            "location": None,
+            "final_url": None,
+            "body_prefix": None,
+            "error": type(exc).__name__ + ": " + str(exc)[:160],
+        }
 
 
 @app.get("/diagnostic/upstream")
@@ -50,3 +59,8 @@ async def diagnostic(url: str = Query(..., description="Provider stream URL")):
             "no_range_chrome_manual": await probe(session, url, range_header=None, ua=DEFAULT_UA, allow_redirects=False),
         }
     return JSONResponse({"target": safe_url(url), "tests": tests})
+
+
+if __name__ == "__main__":
+    import uvicorn
+    uvicorn.run(app, host="0.0.0.0", port=int(os.getenv("PORT", "8888")))
