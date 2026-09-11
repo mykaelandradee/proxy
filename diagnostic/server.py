@@ -1,9 +1,12 @@
 import os
+import sys
 from urllib.parse import urlsplit, urlunsplit
 
 from fastapi import Query
 from fastapi.responses import JSONResponse
 import aiohttp
+
+sys.path.insert(0, "/mediaflow_proxy")
 
 from mediaflow_proxy.main import app
 
