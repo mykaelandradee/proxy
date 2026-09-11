@@ -1,6 +1,7 @@
-# Vercel container entrypoint for MediaFlow Proxy
-# The upstream image already supports the PORT environment variable.
-# Vercel injects PORT at runtime, so MediaFlow listens on the port assigned by Vercel.
+# Vercel diagnostic container for MediaFlow Proxy
 FROM mhdzumair/mediaflow-proxy:latest
 
+COPY diagnostic/server.py /diagnostic/server.py
+
 EXPOSE 8888
+CMD ["python", "/diagnostic/server.py"]
