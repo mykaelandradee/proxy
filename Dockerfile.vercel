@@ -1,0 +1,6 @@
+# Vercel container entrypoint for MediaFlow Proxy
+# The upstream image already supports the PORT environment variable.
+# Vercel injects PORT at runtime, so MediaFlow listens on the port assigned by Vercel.
+FROM mhdzumair/mediaflow-proxy:latest
+
+EXPOSE 8888
