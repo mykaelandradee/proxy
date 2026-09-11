@@ -1,6 +1,8 @@
 # Vercel diagnostic container for MediaFlow Proxy
 FROM mhdzumair/mediaflow-proxy:latest
 
+ENV PATH="/mediaflow_proxy/.venv/bin:$PATH"
+
 COPY diagnostic/server.py /diagnostic/server.py
 
 EXPOSE 8888
